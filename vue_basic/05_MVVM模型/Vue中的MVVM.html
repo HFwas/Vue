@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>理解MVVM</title>
+    <script type="application/javascript" src="../js/vue.js"></script>
+</head>
+<body>
+  <div id="root">
+      <h1>名称: {{name}}</h1>
+      <h1>地址: {{address}}</h1>
+  </div>
+
+  <script type="application/javascript">
+      vue.config.productionTip = false;
+      new vue({
+          el: '#root',
+          data: {
+              name: 'VUE',
+              address: '北京'
+          }
+      })
+  </script>
+
+</body>
+</html>
