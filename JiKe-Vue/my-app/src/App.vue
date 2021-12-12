@@ -3,7 +3,11 @@
     <div>
       <input type="text" v-model="info">
       <button @click="hanleClick">输入</button>
-        <ToDoItem v-for="item in list" :key="item" :item="item">{{item}}</ToDoItem>
+        <ToDoItem v-for="item in list" :key="item">
+          <template v-slot:item="itemProps">
+            <span :style="{fontSize: '20px', color: itemProps.checked ? 'red' : 'blue'}">{{item}}</span>
+          </template>
+        </ToDoItem>
     </div>
   </div>
 </template>
@@ -22,8 +26,8 @@ export default {
   },
   methods: {
     hanleClick(){
-      // console.log(this.info)
       this.list.push(this.info)
+      this.info = ''
     }
   },
   components: {
