@@ -1,0 +1,41 @@
+<template>
+	<div>
+<!--    通过原生的DOM操作获取-->
+<!--    <h1 v-text="msg" id="title"></h1>-->
+
+<!--    -->
+    <h1 v-text="msg" ref="title"></h1>
+    <button ref="btn" @click="showDOM">点我输出上方的DOM元素</button>
+<!--		<School id="sch"></School>-->
+		<School ref="sch"></School>
+	</div>
+</template>
+
+<script>
+	//引入组件
+	import School from './components/School'
+
+	export default {
+		name:'App',
+		components:{
+			School
+		},
+    data(){
+      return{
+        msg:'欢迎学习VUE'
+      }
+    },
+    methods:{
+      showDOM(){
+        // console.log(this.msg)
+        // console.log(document.getElementById("title"))
+        // console.log(this.$refs.title)
+        // console.log(this.$refs.btn)
+        // console.log(this.$refs)
+        // console.log(this.$refs)
+        // console.log(document.getElementById("sch"))
+        console.log(this.$refs.sch)
+      }
+    }
+	}
+</script>

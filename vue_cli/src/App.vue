@@ -6,12 +6,12 @@
 
 <script>
 	//引入组件
-	import School from './components/School'
+	import School from './components/Student'
 
 	export default {
 		name:'App',
 		components:{
 			School
-		}
+    }
 	}
 </script>
