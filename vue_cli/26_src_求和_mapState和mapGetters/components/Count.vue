@@ -30,13 +30,13 @@ export default {
   },
   computed:{
     // hehe(){
-    //   return this.$store.state.sum
+    //   return this.$router.state.sum
     // },
     // xuexiao(){
-    //   return this.$store.state.school
+    //   return this.$router.state.school
     // },
     // kecheng(){
-    //   return this.$store.state.subject
+    //   return this.$router.state.subject
     // },
 
     //借助mapState生成计算属性，从state中读取数据。（对象写法）
@@ -48,7 +48,7 @@ export default {
     /* ******************************************************************** */
 
     /* bigSum(){
-      return this.$store.getters.bigSum
+      return this.$router.getters.bigSum
     }, */
 
     //借助mapGetters生成计算属性，从getters中读取数据。（对象写法）
