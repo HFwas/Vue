@@ -1,15 +1,20 @@
-// 改文件是整个项目的的入口文件
-// 引入VUE
+//引入Vue
 import Vue from 'vue'
-// 引入APP组件，他是所有组件的父组件
+//引入App
 import App from './App.vue'
+//引入VueRouter
+import VueRouter from 'vue-router'
+//引入路由器
+import router from './router'
 
-// 关闭VUE的生产提示
+//关闭Vue的生产提示
 Vue.config.productionTip = false
+//应用插件
+Vue.use(VueRouter)
 
-// 创建VUE实例对象 --- vm
+//创建vm
 new Vue({
-  el:'#app',
-  // 下面这行代码一会解释，完成了这个功能，将APP组件放入容器当中
-  render: h => h(App),
+	el:'#app',
+	render: h => h(App),
+	router:router
 })
