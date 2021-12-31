@@ -3,6 +3,10 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
+// 引入路由
+import router from '@/router';
 new Vue({
   render: h => h(App),
+  // 注册路由：地下的写法，kv一致，
+  router
 }).$mount('#app')
