@@ -4,29 +4,53 @@
       <!--      时间的委派｜｜ 时间的委托-->
       <div @mouseleave="leaveIndex">
         <h2 class="all">全部商品分类</h2>
-        <!--        三级联动-->
+        <!--三级联动-->
         <div class="sort">
-          <div class="all-sort-list2">
+          <!--录用事件委派+编程式导航实现路由的跳转与传递参数-->
+          <div class="all-sort-list2" @click="goSearch">
             <div
                 class="item"
                 v-for="(item, index) in categoryList"
                 :key="item.categoryId"
-                :class="{ cur:currentIndex === index}">
+                :class="{ cur:currentIndex === index}"
+            >
               <!--<h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">-->
               <h3 @mouseenter="changeIndex(index)">
-                <a href="">{{ item.categoryName}}</a>
+                <!--<a href="">{{ item.categoryName}}</a>-->
+                <!--声明式导航：是一个组件，会导致卡顿的现象，所以不使用-->
+                <!--<router-link to="/search">{{ item.categoryName}}</router-link>-->
+                <a
+                    :data-categoryName="item.categoryName"
+                    :data-category1Id="item.categoryId"
+                >
+                  {{ item.categoryName}}
+                </a>
               </h3>
               <!--二级，三级分类-->
               <div class="item-list clearfix" :style="{display: currentIndex === index ? 'block' : 'none'}">
                 <div class="subitem" v-for="(item1, index) in item.categoryChild"
                      :key="item1.categoryId">
-                  <dl class="fore">
-                    <dt>
-                      <a href="">{{ item1.categoryName }}</a>
-                    </dt>
-                    <dd>
+                   <dl class="fore">
+                     <dt>
+                       <!--<a href="">{{ item1.categoryName }}</a>-->
+                       <!--<router-link to="/search">{{ item2.categoryName}}</router-link>-->
+                       <a
+                           :data-categoryName="item1.categoryName"
+                           :data-category3Id="item1.categoryId"
+                       >
+                         {{ item1.categoryName }}
+                       </a>
+                     </dt>
+                     <dd>
                       <em v-for="(item2, index) in item1.categoryChild " :key="item2.categoryId">
-                        <a href="">{{ item2.categoryName }}</a>
+                        <!--<a href="">{{ item2.categoryName }}</a>-->
+                        <!--<router-link to="/search">{{ item2.categoryName}}</router-link>-->
+                        <a
+                            :data-categoryName="item2.categoryName"
+                            :data-category2Id="item2.categoryId"
+                        >
+                          {{ item2.categoryName }}
+                        </a>
                       </em>
                     </dd>
                   </dl>
@@ -102,6 +126,38 @@ export default {
     // 一级分类鼠标移出的
     leaveIndex(){
       this.currentIndex = -1;
+    },
+    //进行路由跳转的方法
+    goSearch(event){
+      //最好的解决方案：编程式导航 + 事件委派
+      //利用事件委派存在一些问题：1。怎么知道点击的是a标签。2。如何获取参数【1。2。3级分类的产品的名字，id】
+      // 存在的一些问题：事件委派：是吧全部的子节点【h3,dt,em】的事件委派给父亲节点
+      //存在另外一个问题：即使你能确定点击的a标签，如何区分是一级，二级，三级分类的标签
+
+      //第一个问题：把子节点当中a标签，我加上自定义属性data-categoryName，其余的子节点是没有的
+      let element = event.target;
+      // 获取到当前触发这个事件的节点【h3,a,dt,d1】,需要带有:data-categoryName这样节点【一定是a标签】
+      //节点有一个属性dataset属性，可以获取节点的自定义属性与属性值
+      let { categoryname,category1id, category2id, category3id} = element.dataset;
+      console.log(element.dataset);
+      //如果标签身上拥有categoryName一定是a标签
+      if (categoryname) {
+        //整理路由跳转的参数
+        let location = { name:'search' };
+        let query = {categoryName:categoryname};
+        //一级分类，二级分类，三级分类的a标签
+        if (category1id) {
+          query.category1id = category1id;
+        } else if (category2id) {
+          query.category2id = category2id;
+        } else {
+          query.category3id = category3id;
+        }
+        //整理完毕，
+        location.query = query;
+        //路由跳转
+        this.$router.push(location);
+      }
     }
   }
 }
