@@ -3,10 +3,10 @@ import requests from "@/api/request";
 
 // 三级联动接口，
 ///api/product/getBaseCategoryList   get  无参数
-export const reqCategoryList = ()=>{
+export const reqCategoryList = () => {
     // 发请求:axios发请求返回结果Promise对象
-    requests({
-        url:'/product/getBaseCategoryList',
-        method:'get',
+    return requests({
+        url: '/product/getBaseCategoryList',
+        method: 'GET',
     })
 }
