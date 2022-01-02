@@ -1,7 +1,42 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <!--      时间的委派｜｜ 时间的委托-->
+      <div @mouseleave="leaveIndex">
+        <h2 class="all">全部商品分类</h2>
+        <!--        三级联动-->
+        <div class="sort">
+          <div class="all-sort-list2">
+            <div
+                class="item"
+                v-for="(item, index) in categoryList"
+                :key="item.categoryId"
+                :class="{ cur:currentIndex === index}">
+              <!--<h3 @mouseenter="changeIndex(index)" @mouseleave="leaveIndex">-->
+              <h3 @mouseenter="changeIndex(index)">
+                <a href="">{{ item.categoryName}}</a>
+              </h3>
+              <!--二级，三级分类-->
+              <div class="item-list clearfix" :style="{display: currentIndex === index ? 'block' : 'none'}">
+                <div class="subitem" v-for="(item1, index) in item.categoryChild"
+                     :key="item1.categoryId">
+                  <dl class="fore">
+                    <dt>
+                      <a href="">{{ item1.categoryName }}</a>
+                    </dt>
+                    <dd>
+                      <em v-for="(item2, index) in item1.categoryChild " :key="item2.categoryId">
+                        <a href="">{{ item2.categoryName }}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -12,37 +47,24 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item" v-for="(item, index) in categoryList" :key="item.categoryId">
-            <h3>
-              <a href="">{{ item.categoryName}}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem" v-for="(item1, index) in item.categoryChild" :key="item1.categoryId">
-                <dl class="fore">
-                  <dt>
-                    <a href="">{{ item1.categoryName }}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="(item2, index) in item1.categoryChild " :key="item2.categoryId">
-                      <a href="">{{ item2.categoryName }}</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
+// 引入方式：是吧lodash全部功能函数引入
+// 最好的引入方式是：按需加载，
+import throttle from 'lodash/throttle';
 export default {
   name: "TypeNav",
+  data(){
+    return{
+      //存储用户鼠标移上哪一个一级分类
+      currentIndex:  -1,
+    }
+  },
   // 组件一挂载完毕，可以像服务器发请求
   mounted() {
     //通知vuex发请求，获取数据，存储与仓库当中
@@ -54,6 +76,33 @@ export default {
       //注入一个参数state,其实即为大仓库中的数据
       categoryList:state => state.home.categoryList
     })
+  },
+  methods:{
+    //这是es6的写法
+    //changeIndex(index){
+    //index:鼠标移上某一个一级分类的元素的索引值
+    // 正常情况（用户慢慢的操作）：鼠标进入,每一个一级分类h3，都会出发鼠标进入事件
+    // 非正常情况（用户操作很快）：本身全部的一级分类都应该触发鼠标进入事件，但是经过测试，只有部分h3触发了
+    // 就是由于用户行为过快，导致浏览器反应不过来了。如果当前回调函数当中有一些大量业务，有可能出现卡死现象
+    //  this.currentIndex = index;
+    //},
+
+    //需要修改称es5的写法
+    // 鼠标进入修改响应式数据currentIndex属性
+    // throttle函数别用箭头函数
+    //changeIndex:_.throttle(function (index) {
+    changeIndex:throttle(function (index) {
+      //index:鼠标移上某一个一级分类的元素的索引值
+      // 正常情况（用户慢慢的操作）：鼠标进入,每一个一级分类h3，都会出发鼠标进入事件
+      // 非正常情况（用户操作很快）：本身全部的一级分类都应该触发鼠标进入事件，但是经过测试，只有部分h3触发了
+      // 就是由于用户行为过快，导致浏览器反应不过来了。如果当前回调函数当中有一些大量业务，有可能出现卡死现象
+      this.currentIndex = index;
+      console.log("触发了")
+    }, 50),
+    // 一级分类鼠标移出的
+    leaveIndex(){
+      this.currentIndex = -1;
+    }
   }
 }
 </script>
@@ -115,7 +164,7 @@ export default {
           }
 
           .item-list {
-            display: none;
+            //display: none;
             position: absolute;
             width: 734px;
             min-height: 460px;
@@ -170,9 +219,12 @@ export default {
 
           &:hover {
             .item-list {
-              display: block;
+              //display: block;
             }
           }
+        }
+        .cur {
+          background-color: skyblue;
         }
       }
     }
