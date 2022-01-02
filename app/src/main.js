@@ -8,6 +8,10 @@ import TyprNav from '@/pages/Home/TypeNav';
 Vue.component(TyprNav.name, TyprNav);
 // 引入路由
 import router from '@/router';
+
+// 测试
+import {reqCategoryList } from '@/api';
+reqCategoryList();
 new Vue({
   render: h => h(App),
   // 注册路由：地下的写法，kv一致，
