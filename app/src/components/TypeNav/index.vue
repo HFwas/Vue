@@ -130,7 +130,6 @@ export default {
       // 非正常情况（用户操作很快）：本身全部的一级分类都应该触发鼠标进入事件，但是经过测试，只有部分h3触发了
       // 就是由于用户行为过快，导致浏览器反应不过来了。如果当前回调函数当中有一些大量业务，有可能出现卡死现象
       this.currentIndex = index;
-      console.log("触发了")
     }, 50),
     // 一级分类鼠标移出的
     leaveIndex(){
@@ -173,10 +172,15 @@ export default {
         } else {
           query.category3id = category3id;
         }
-        //整理完毕，
         location.query = query;
-        //路由跳转
-        this.$router.push(location);
+        console.log(location);
+        // 判断：如果路由跳转的时候，带有params参数，捎带传递过去
+        if (this.$route.params) {
+          // 动态给location配置对象添加query属性
+          location.params = this.$route.params;
+          // 路由跳转
+          this.$router.push(location);
+        }
       }
     }
   }
