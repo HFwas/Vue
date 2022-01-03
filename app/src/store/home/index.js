@@ -13,7 +13,7 @@ const mutations = {
 };
 const actions = {
     // 通过API里面的接口函数调用，向服务器发请求，获取服务器的数据
-    async categoryList(commit){
+    async getCategoryList(commit){
         let categoryList = await reqCategoryList();
         if (categoryList.code === 200) {
             commit.commit('CATEGORYLIST', categoryList.data);
