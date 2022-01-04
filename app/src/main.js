@@ -13,6 +13,8 @@ import TyprNav from '@/components/TypeNav';
 Vue.component(TyprNav.name, TyprNav);
 // 引入mockserver.js    ---- mock数据
 import '@/mock/mockServer.js';
+// 引入swiper样式
+import 'swiper/css/swiper.css';
 new Vue({
   render: h => h(App),
   // 注册路由：地下的写法，kv一致，

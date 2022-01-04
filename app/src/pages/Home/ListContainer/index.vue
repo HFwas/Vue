@@ -6,8 +6,8 @@
         <!--banner轮播-->
         <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
+            <div class="swiper-slide" v-for="(carousel, index) in bannerList" :key="carousel.id">
+              <img :src="carousel.imgUrl" />
             </div>
           </div>
           <!-- 如果需要分页器 -->
@@ -103,16 +103,77 @@
 
 <script>
 import { mapState } from 'vuex';
+//导bao
+import Swiper from 'swiper';
 export default {
   name: "ListContainer",
   mounted() {
+    //mounted：组件挂载完毕，正常说组件结构（DOM）已经全有了
+    // 为什么swiper实例在mounted当中直接书写不可以呢：因为结构还没有完整
     //派发actions：通过vuex发起ajax请求，将数据存储在仓库当中
-    this.$store.dispatch('getBannerList')
+    this.$store.dispatch('getBannerList');
+
+
+    // 旧版的轮播图方案：
+    //在new Swiper实例之前，页面中结构必须的有【现在老师吧new swiper实例放在mounted这里发现不行】
+    //因为dispath当中设计到异步语句，导致v-for遍历的时候还没有完全因此不行
+    //setTimeout(()=>{
+    //  let mySwiper = new Swiper(document.querySelector('.swiper-container'), {
+    //    autoplay:true,
+    //    loop:false,
+    //    //如果需要分页器
+    //    pagination:{
+    //      el:'.swiper-pagination',
+    //      //点击小球的时候也切换图片
+    //      clickable:true
+    //    },
+    //    //如果需要前进后退按钮
+    //    navigator:{
+    //      nextEl: '.swiper-button-next',
+    //      prevEl: '.swiper-button-prev',
+    //    }
+    //  });
+    //},1000)
+
+
+    // 最优版的轮播图方案：
+
   },
   computed:{
      ...mapState({
-      bannerList: state => state.home.bannerLIst
+      bannerList: state => state.home.bannerList
     })
+  },
+  watch:{
+    //监听bannerList数据的变化：因为这条数据发生过变化----由空数组变为数组变为你有四个元素
+    bannerList: {
+      handler(newValue, oldValue) {
+          //现在咋们通过watch监听bannerList属性的的属性值的变化
+          //如果执行handler方法，代表组件实例身上这个属性的属性已经有【数组：四个 元素】
+          //当前这个函数执行：只能保证bannerList数据已经有了，但是你没办法保证v-for已经执行结束了
+          //v-for执行完毕，才有结构【你现在在watch当中没办法保证的】
+          //在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+          this.$nextTick(()=>{
+            //当你执行这个回调的时候：保证服务器数据回来了，v-for执行完毕了【轮播图的结构一定有了】
+            let mySwiper = new Swiper(document.querySelector('.swiper-container'), {
+              //autoplay:true,
+              loop:true,
+              noSwiping:false,
+              //如果需要分页器
+              pagination: {
+                el:'.swiper-pagination',
+                //点击小球的时候也切换图片
+                clickable:true
+              },
+              //如果需要前进后退按钮
+              navigator: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+              }
+            });
+          })
+      }
+    }
   }
 }
 </script>
