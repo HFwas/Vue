@@ -22,13 +22,14 @@
               <ul class="jd-list">
                 <li v-for="(keyword,index) in list.keywords">{{ keyword }}</li>
               </ul>
-              <img src="./images/floor-1-1.png" />
+              <img :src="list.bigImg" />
             </div>
             <div class="floorBanner">
-              <div class="swiper-container" id="floor1Swiper">
+              <!--轮播图的地方-->
+              <div class="swiper-container" ref="floor1Swiper">
                 <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                    <img src="./images/floor-1-b01.png">
+                  <div class="swiper-slide" v-for="(carousel,index) in list.carouselList" :key="carousel.id">
+                    <img :src="carousel.imgUrl">
                   </div>
                 </div>
                 <!-- 如果需要分页器 -->
@@ -42,22 +43,22 @@
             <div class="split">
               <span class="floor-x-line"></span>
               <div class="floor-conver-pit">
-                <img src="./images/floor-1-2.png" />
+                <img :src="list.recommendList[0]" />
               </div>
               <div class="floor-conver-pit">
-                <img src="./images/floor-1-3.png" />
+                <img :src="list.recommendList[1]" />
               </div>
             </div>
             <div class="split center">
-              <img src="./images/floor-1-4.png" />
+              <img :src="list.bigImg" />
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
               <div class="floor-conver-pit">
-                <img src="./images/floor-1-5.png" />
+                <img :src="list.recommendList[2]" />
               </div>
               <div class="floor-conver-pit">
-                <img src="./images/floor-1-6.png" />
+                <img :src="list.recommendList[3]" />
               </div>
             </div>
           </div>
@@ -68,9 +69,27 @@
 </template>
 
 <script>
+import Swiper from "swiper";
 export default {
   name: "Floor",
-  props:['list']
+  props:['list'],
+  //组件挂载完毕的地方
+  mounted() {
+    //console.log(this)
+    //第一次写swiper的时候：在mounted当中书写是不可以的，但是为什么现在可以啦
+    //第一次书写轮播图的时候，是在当前组件内部发请求，动态渲染解构【前台至少服务器需要回来】，因此当年的写法在这里不行
+    var floor1Swiper = new Swiper(this.$refs.floor1Swiper ,{
+      loop:true,
+      pagination:{
+        el:".swiper-pagination",
+        clickable:true
+      },
+      navigator:{
+        nextEl:".swiper-button-next",
+        prevEl:".swiper-button-prev"
+      }
+    });
+  }
 }
 </script>
 
