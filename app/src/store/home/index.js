@@ -29,6 +29,7 @@ const actions = {
     // 通过API里面的接口函数调用，向服务器发请求，获取服务器的数据
     async getCategoryList(commit){
         let categoryList = await reqCategoryList();
+        console.log(categoryList)
         if (categoryList.code === 200) {
             commit.commit('CATEGORYLIST', categoryList.data);
         }
@@ -43,7 +44,6 @@ const actions = {
     //获取floor集合数据
     async getFloorList(commit) {
         let floorList = await reqFloorList();
-        console.log(floorList)
         if (floorList.code === 200) {
             commit.commit('GETFLOORLIST', floorList.data);
         }

@@ -26,19 +26,7 @@
             </div>
             <div class="floorBanner">
               <!--轮播图的地方-->
-              <div class="swiper-container" ref="floor1Swiper">
-                <div class="swiper-wrapper">
-                  <div class="swiper-slide" v-for="(carousel,index) in list.carouselList" :key="carousel.id">
-                    <img :src="carousel.imgUrl">
-                  </div>
-                </div>
-                <!-- 如果需要分页器 -->
-                <div class="swiper-pagination"></div>
-
-                <!-- 如果需要导航按钮 -->
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
-              </div>
+              <Carousel :list="list.carouselList"/>
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
@@ -69,7 +57,7 @@
 </template>
 
 <script>
-import Swiper from "swiper";
+
 export default {
   name: "Floor",
   props:['list'],
@@ -78,18 +66,9 @@ export default {
     //console.log(this)
     //第一次写swiper的时候：在mounted当中书写是不可以的，但是为什么现在可以啦
     //第一次书写轮播图的时候，是在当前组件内部发请求，动态渲染解构【前台至少服务器需要回来】，因此当年的写法在这里不行
-    var floor1Swiper = new Swiper(this.$refs.floor1Swiper ,{
-      loop:true,
-      pagination:{
-        el:".swiper-pagination",
-        clickable:true
-      },
-      navigator:{
-        nextEl:".swiper-button-next",
-        prevEl:".swiper-button-prev"
-      }
-    });
-  }
+
+  },
+
 }
 </script>
 
