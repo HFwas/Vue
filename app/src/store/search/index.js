@@ -19,8 +19,13 @@ const actions = {
         }
     }
 };
-//计算属性，在项目当中是为了简化数据而生
-const getters = {};
+//计算属性，在项目当中getters主要的作用是：简化仓库中的数据（简化数据而生）
+//可以把我们将在在组件当中需要用的数据简化一下【将来组件在获取数据的时候就方便了】
+const getters = {
+    // 从当前行参state，当前仓库中的state,并非大仓库中的那个state
+    searchList(){
+    }
+};
 
 export default {
     state,
