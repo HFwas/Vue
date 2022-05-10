@@ -45,10 +45,10 @@
 <!-- 准备好一个容器-->
 <div id="root">
     <h2>欢迎来到{{name}}学习</h2>
-    <!-- 阻止默认事件（常用） -->
+    <!-- 阻止默认事件（常用） -  添加 prevent 之后点击不会跳转 -->
     <a href="http://www.atguigu.com" @click.prevent="showInfo">点我提示信息</a>
 
-    <!-- 阻止事件冒泡（常用） -->
+    <!-- 阻止事件冒泡（常用）- 添加 stop 之后只显示 button 的弹窗， 不会显示 div 上的 click 事件弹窗 -->
     <div class="demo1" @click="showInfo">
         <button @click.stop="showInfo">点我提示信息</button>
         <!-- 修饰符可以连续写 -->
@@ -58,7 +58,10 @@
     <!-- 事件只触发一次（常用） -->
     <button @click.once="showInfo">点我提示信息</button>
 
-    <!-- 使用事件的捕获模式 -->
+    <!-- 使用事件的捕获模式
+        原本的执行顺序为：div2   div1
+        加上capture之后，执行顺序为    div1     div2
+     -->
     <div class="box1" @click.capture="showMsg(1)">
         div1
         <div class="box2" @click="showMsg(2)">
@@ -66,7 +69,7 @@
         </div>
     </div>
 
-    <!-- 只有event.target是当前操作的元素时才触发事件； -->
+    <!-- 只有 event.target 是当前操作的元素时才触发事件； -->
     <div class="demo1" @click.self="showInfo">
         <button @click="showInfo">点我提示信息</button>
     </div>
